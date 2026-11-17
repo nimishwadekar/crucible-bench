@@ -1,0 +1,12 @@
+[workspace]
+inject = ["count.py", "write.md"]
+
+[agent]
+backend       = "openshell"
+harness       = "claude"
+sandbox_image = "ghcr.io/neuralmagic/sandbox-triage-cc@sha256:36a11bb264a7268962eaf982986a631e7a2673848b468f8c8fd636c559770333"
+goal          = "Write a haiku about a topic, then count its words."
+
+[workflow]
+type = "playbook"
+file = "workflow.star"
