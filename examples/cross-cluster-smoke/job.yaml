@@ -1,0 +1,38 @@
+{
+  "apiVersion": "batch/v1",
+  "kind": "Job",
+  "metadata": {},
+  "spec": {
+    "parallelism": 0,
+    "completions": 1,
+    "backoffLimit": 0,
+    "activeDeadlineSeconds": 120,
+    "ttlSecondsAfterFinished": 300,
+    "template": {
+      "spec": {
+        "restartPolicy": "Never",
+        "automountServiceAccountToken": false,
+        "securityContext": {
+          "runAsNonRoot": true,
+          "seccompProfile": {"type": "RuntimeDefault"}
+        },
+        "containers": [
+          {
+            "name": "smoke",
+            "image": "cgr.dev/chainguard/busybox:latest",
+            "imagePullPolicy": "Always",
+            "command": ["/bin/sh", "-c", "echo crucible-cross-cluster-ok"],
+            "securityContext": {
+              "allowPrivilegeEscalation": false,
+              "capabilities": {"drop": ["ALL"]}
+            },
+            "resources": {
+              "requests": {"cpu": "10m", "memory": "16Mi"},
+              "limits": {"cpu": "100m", "memory": "32Mi"}
+            }
+          }
+        ]
+      }
+    }
+  }
+}

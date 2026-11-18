@@ -1,0 +1,28 @@
+edition = 2
+
+[workspace]
+inject = ["smoke.py", "job.yaml"]
+
+[agent]
+backend = "command"
+agent_cmd = "true"
+goal = "Run and clean up a smoke-test pod on a target Kubernetes cluster."
+
+[dispatch]
+target = "pirate"
+
+[[secret]]
+name = "target-kubeconfig"
+kind = "kubeconfig"
+# Crucible mounts the draft's bound kubeconfig secret here in the loop pod.
+path = "/var/run/crucible-target/kubeconfig"
+
+[[secret]]
+name = "registry-auth"
+kind = "registry_authfile"
+path = "/var/run/crucible-target/registry-auth.json"
+
+# Compiled per run from workflow.star, which declares params.
+[workflow]
+type = "playbook"
+file = "workflow.star"
